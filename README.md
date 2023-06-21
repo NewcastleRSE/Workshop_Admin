@@ -58,10 +58,7 @@ Any links to production environment, video demos and screenshots.
 
 ## Roadmap
 
-- [x] Initial Research  
-- [ ] Minimum viable product <-- You are Here  
-- [ ] Alpha Release  
-- [ ] Feature-Complete Release  
+- See docs directory
 
 ## Contributing
 
@@ -77,6 +74,8 @@ A branch per feature being worked on.
 https://nvie.com/posts/a-successful-git-branching-model/
 
 ## License
+
+MIT
 
 ## Citation
 
