@@ -122,6 +122,12 @@ public class Main {
             parameters.put("name", "Harry");
             Person harry = databaseManager.read(Person.class, "firstName = :name", parameters).get(0);
             harry.addSchool(medical);
+            
+            // Set programme for harry
+            parameters = new HashMap<>();
+            parameters.put("programme", "CompSci");
+            Programme compsci = databaseManager.read(Programme.class, "programme = :programme", parameters).get(0);
+            harry.addProgramme(compsci);
             databaseManager.update(harry);
 
             databaseManager.close();

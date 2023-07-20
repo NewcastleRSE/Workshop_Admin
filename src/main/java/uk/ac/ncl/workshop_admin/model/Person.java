@@ -84,7 +84,11 @@ public class Person {
 //  }
 //
   public void addSchool(School school) {
+
     schools.add(school);
+  }
+  public void addProgramme(Programme programme) {
+    programmes.add(programme);
   }
 
 //  public void removeSchool(School school) {
