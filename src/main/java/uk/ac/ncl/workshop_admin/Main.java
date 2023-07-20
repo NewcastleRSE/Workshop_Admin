@@ -29,28 +29,28 @@ public class Main {
             new School("Business"),
             new School("Law"),
             new School("Witchcraft"),
-            new School("Baking"),
+            new School("Real or Cake"),
             new School("Dark Arts")
         ));
 
         private static final ArrayList<Programme> PROGRAMME_DATA = new ArrayList<>(Arrays.asList(
-            new Programme("PhD"),
-            new Programme("MSc"),
             new Programme("BSc"),
-            new Programme("PhD"),
             new Programme("CompSci"),
-            new Programme("CompSci"),
-            new Programme("MSc")
+            new Programme("MSc"),
+            new Programme("PhD")
         ));
 
         private static final ArrayList<Stage> STAGE_DATA = new ArrayList<>(Arrays.asList(
             new Stage("I"),
+            new Stage("II"),
             new Stage("III"),
             new Stage("IV"),
-            new Stage("II"),
-            new Stage("IV"),
-            new Stage("I"),
-            new Stage("II")
+            new Stage("V"),
+            new Stage("VI"),
+            new Stage("VII"),
+            new Stage("VIII"),
+            new Stage("IX"),
+            new Stage("X")
         ));
 
         public static void main(String[] args) {
