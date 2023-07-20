@@ -21,6 +21,7 @@ Newcastle University
 - SparkJava
 - SQLite
 - JDBC
+- Hibernate
 - 
 
 ## Getting Started
