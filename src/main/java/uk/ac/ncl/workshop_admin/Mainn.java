@@ -60,7 +60,7 @@ public class Mainn {
     // Load data from the CSV file
     try (Reader reader = new FileReader("uniFormat.csv")) {
       CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader()
-          .withHeader("user profile", "username", "Programme", "Stage"));
+          .withHeader("ID","user profile","username","uuid","date created","date modified","source","occurrence","contact number","attended","additional notes","attended datetime","eval email sent","eval submitted","User type","Programme","Stage","School","Attended without booking?","attendance method","synced to portfolio","email"));
 
       for (CSVRecord record : csvParser) {
         // Get data from the CSV record
