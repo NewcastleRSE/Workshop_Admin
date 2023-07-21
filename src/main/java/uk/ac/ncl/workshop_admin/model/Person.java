@@ -91,6 +91,10 @@ public class Person {
     programmes.add(programme);
   }
 
+  public void addStage(Stage stage) {
+    stages.add(stage);
+  }
+
 //  public void removeSchool(School school) {
 //    schools.remove(school);
 //  }
