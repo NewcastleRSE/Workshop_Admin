@@ -77,44 +77,97 @@ public class Mainn {
         String firstName = nameParts[1]; // Index 1 contains the first name
         String lastName = nameParts[0]; // Index 0 contains the last name
 
-
-        // Create and save the objects to the database
-        Person person = new Person(firstName, lastName);
-        Programme programme = new Programme(programmeName);
-        Stage stage = new Stage(stageName);
-
         databaseManager.open();
-        databaseManager.create(person);
-        databaseManager.create(programme);
-        databaseManager.create(stage);
-        databaseManager.close();
+        // Check if the person already exists in the database
+        parameters = new HashMap<>();
+        parameters.put("firstName", firstName);
+        parameters.put("lastName", lastName);
+        List<Person> existingPeople = databaseManager.read(Person.class, "firstName = :firstName AND lastName = :lastName", parameters);
 
-        // Retrieve corresponding Programme and Stage objects from the database
-        databaseManager.open();
-        List<Programme> matchingProgrammes = databaseManager.read(Programme.class, "programme = :programme", Collections.singletonMap("programme", programmeName));
-        List<Stage> matchingStages = databaseManager.read(Stage.class, "stage = :stage", Collections.singletonMap("stage", stageName));
-
-        // Check if Programme and Stage already exist in the database, if yes, use them
-        if (!matchingProgrammes.isEmpty()) {
-          programme = matchingProgrammes.get(0);
+        Person person;
+        if (existingPeople.isEmpty()) {
+          // Create and save the person to the database if it doesn't exist
+          person = new Person(firstName, lastName);
+          databaseManager.create(person);
+        } else {
+          // Use the existing person if it already exists
+          person = existingPeople.get(0);
         }
-        if (!matchingStages.isEmpty()) {
-          stage = matchingStages.get(0);
-        }
-
-        // Associate Programme and Stage with the Person
-        person.addProgramme(programme);
-        person.addStage(stage);
-
-        // Create or update the objects in the database
         databaseManager.update(person);
+
+        // Check if the programme already exists in the database
+        parameters = new HashMap<>();
+        parameters.put("programme", programmeName);
+        List<Programme> existingProgrammes = databaseManager.read(Programme.class, "programme = :programme", parameters);
+
+        Programme programme;
+        if (existingProgrammes.isEmpty()) {
+          // Create and save the programme to the database if it doesn't exist
+          programme = new Programme(programmeName);
+          databaseManager.create(programme);
+        } else {
+          // Use the existing programme if it already exists
+          programme = existingProgrammes.get(0);
+        }
         databaseManager.update(programme);
+
+        // Check if the stage already exists in the database
+        parameters = new HashMap<>();
+        parameters.put("stage", stageName);
+        List<Stage> existingStages = databaseManager.read(Stage.class, "stage = :stage", parameters);
+
+        Stage stage;
+        if (existingStages.isEmpty()) {
+          // Create and save the stage to the database if it doesn't exist
+          stage = new Stage(stageName);
+          databaseManager.create(stage);
+        } else {
+          // Use the existing stage if it already exists
+          stage = existingStages.get(0);
+        }
         databaseManager.update(stage);
 
         databaseManager.close();
 
+        databaseManager.open();
+        // Associate the person with the programme and stage
+        if (!person.getProgrammes().contains(programme)) {
+          person.addProgramme(programme);
+        }
 
+        if (!person.getStages().contains(stage)) {
+          person.addStage(stage);
+        }
+
+        databaseManager.update(person);
+
+        databaseManager.close();
+
+//        // Retrieve corresponding Programme and Stage objects from the database
+//        databaseManager.open();
+//        List<Programme> matchingProgrammes = databaseManager.read(Programme.class, "programme = :programme", Collections.singletonMap("programme", programmeName));
+//        List<Stage> matchingStages = databaseManager.read(Stage.class, "stage = :stage", Collections.singletonMap("stage", stageName));
+//
+//        // Check if Programme and Stage already exist in the database, if yes, use them
+//        if (!matchingProgrammes.isEmpty()) {
+//          programme = matchingProgrammes.get(0);
+//        }
+//        if (!matchingStages.isEmpty()) {
+//          stage = matchingStages.get(0);
+//        }
+//
+//        // Associate Programme and Stage with the Person
+//        person.addProgramme(programme);
+//        person.addStage(stage);
+//
+//        // Create or update the objects in the database
+//        databaseManager.update(person);
+//        databaseManager.update(programme);
+//        databaseManager.update(stage);
+//
+//        databaseManager.close();
       }
+
     } catch (IOException e) {
       e.printStackTrace();
     }
