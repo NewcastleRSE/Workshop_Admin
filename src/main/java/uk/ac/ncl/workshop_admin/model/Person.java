@@ -4,6 +4,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -75,29 +76,50 @@ public class Person {
     this.lastName = lastName;
   }
 
-//  public Set<School> getSchools() {
-//    return schools;
-//  }
-//
-//  public void clearSchools() {
-//    schools.clear();
-//  }
-//
+  // Lazy initialization for the programmes set
+  public Set<Programme> getProgrammes() {
+    if (this.programmes == null) {
+      this.programmes = new HashSet<>();
+    }
+    return programmes;
+  }
+
+  public void setProgrammes(Set<Programme> programmes) {
+    this.programmes = programmes;
+  }
+
+  public void addProgramme(Programme programme) {
+    getProgrammes().add(programme);
+  }
+
+  public void removeProgramme(Programme programme) {
+    getProgrammes().remove(programme);
+  }
+
+  // Lazy initialization for the stages set
+  public Set<Stage> getStages() {
+    if (this.stages == null) {
+      this.stages = new HashSet<>();
+    }
+    return stages;
+  }
+
+  public void setStages(Set<Stage> stages) {
+    this.stages = stages;
+  }
+
+  public void addStage(Stage stage) {
+    getStages().add(stage);
+  }
+
+  public void removeStage(Stage stage) {
+    getStages().remove(stage);
+  }
+
   public void addSchool(School school) {
 
     schools.add(school);
   }
-  public void addProgramme(Programme programme) {
-    programmes.add(programme);
-  }
-
-  public void addStage(Stage stage) {
-    stages.add(stage);
-  }
-
-//  public void removeSchool(School school) {
-//    schools.remove(school);
-//  }
 
   @Override
   public String toString() {

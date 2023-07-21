@@ -12,6 +12,7 @@ import uk.ac.ncl.workshop_admin.util.DatabaseManager;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class Mainn {
 
         // Remove the double quotes from the user profile string
         userProfile = userProfile.replaceAll("\"", "");
-        
+
         // Split the user profile string into first name and last name
         String[] nameParts = userProfile.split(",\\s*");
         String firstName = nameParts[1]; // Index 1 contains the first name
@@ -87,6 +88,32 @@ public class Mainn {
         databaseManager.create(programme);
         databaseManager.create(stage);
         databaseManager.close();
+
+        // Retrieve corresponding Programme and Stage objects from the database
+        databaseManager.open();
+        List<Programme> matchingProgrammes = databaseManager.read(Programme.class, "programme = :programme", Collections.singletonMap("programme", programmeName));
+        List<Stage> matchingStages = databaseManager.read(Stage.class, "stage = :stage", Collections.singletonMap("stage", stageName));
+
+        // Check if Programme and Stage already exist in the database, if yes, use them
+        if (!matchingProgrammes.isEmpty()) {
+          programme = matchingProgrammes.get(0);
+        }
+        if (!matchingStages.isEmpty()) {
+          stage = matchingStages.get(0);
+        }
+
+        // Associate Programme and Stage with the Person
+        person.addProgramme(programme);
+        person.addStage(stage);
+
+        // Create or update the objects in the database
+        databaseManager.update(person);
+        databaseManager.update(programme);
+        databaseManager.update(stage);
+
+        databaseManager.close();
+
+
       }
     } catch (IOException e) {
       e.printStackTrace();
