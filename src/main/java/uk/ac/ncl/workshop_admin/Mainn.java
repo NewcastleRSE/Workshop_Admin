@@ -64,10 +64,18 @@ public class Mainn {
 
       for (CSVRecord record : csvParser) {
         // Get data from the CSV record
-        String firstName = record.get("user profile");
-        String lastName = record.get("username");
+        String userProfile = record.get("user profile");
         String programmeName = record.get("Programme");
         String stageName = record.get("Stage");
+
+        // Remove the double quotes from the user profile string
+        userProfile = userProfile.replaceAll("\"", "");
+        
+        // Split the user profile string into first name and last name
+        String[] nameParts = userProfile.split(",\\s*");
+        String firstName = nameParts[1]; // Index 1 contains the first name
+        String lastName = nameParts[0]; // Index 0 contains the last name
+
 
         // Create and save the objects to the database
         Person person = new Person(firstName, lastName);
