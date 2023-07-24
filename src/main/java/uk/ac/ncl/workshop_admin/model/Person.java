@@ -116,10 +116,30 @@ public class Person {
     getStages().remove(stage);
   }
 
-  public void addSchool(School school) {
-
-    schools.add(school);
+  // Lazy initialization for the school set
+  public Set<School> getSchools() {
+    if (this.schools == null) {
+      this.schools = new HashSet<>();
+    }
+    return schools;
   }
+
+  public void setSchools(Set<School> schools) {
+    this.schools = schools;
+  }
+
+  public void addSchool(School school) {
+    getSchools().add(school);
+  }
+
+  public void removeSchool(School school) {
+    getSchools().remove(school);
+  }
+
+//  public void addSchool(School school) {
+//
+//    schools.add(school);
+//  }
 
   @Override
   public String toString() {

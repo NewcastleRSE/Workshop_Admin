@@ -67,6 +67,8 @@ public class Main {
         String userProfile = record.get("user profile");
         String programmeName = record.get("Programme");
         String stageName = record.get("Stage");
+        String schoolName = record.get("School");
+
 
         // Remove the double quotes from the user profile string
         userProfile = userProfile.replaceAll("\"", "");
@@ -126,16 +128,36 @@ public class Main {
         }
         databaseManager.update(stage);
 
+        // Check if the school already exists in the database
+        parameters = new HashMap<>();
+        parameters.put("school", schoolName);
+        List<School> existingSchools = databaseManager.read(School.class, "school = :school", parameters);
+
+        School school;
+        if (existingSchools.isEmpty()) {
+          // Create and save the school to the database if it doesn't exist
+          school = new School(schoolName);
+          databaseManager.create(school);
+        } else {
+          // Use the existing school if it already exists
+          school = existingSchools.get(0);
+        }
+        databaseManager.update(school);
+
         databaseManager.close();
 
         databaseManager.open();
-        // Associate the person with the programme and stage
+        // Associate the person with the programme, stage and school
         if (!person.getProgrammes().contains(programme)) {
           person.addProgramme(programme);
         }
 
         if (!person.getStages().contains(stage)) {
           person.addStage(stage);
+        }
+
+        if (!person.getSchools().contains(school)) {
+          person.addSchool(school);
         }
         databaseManager.update(person);
 
