@@ -149,6 +149,22 @@ public class Main {
         }
         databaseManager.update(school);
 
+        // Check if the workshop already exists in the database
+        parameters = new HashMap<>();
+        parameters.put("workshop", workshopName);
+        List<Workshop> existingWorkshops = databaseManager.read(Workshop.class, "workshop = :workshop", parameters);
+
+        Workshop workshop;
+        if (existingWorkshops.isEmpty()) {
+          // Create and save the workshop to the database if it doesn't exist
+          workshop = new Workshop(workshopName);
+          databaseManager.create(workshop);
+        } else {
+          // Use the existing programme if it already exists
+          workshop = existingWorkshops.get(0);
+        }
+        databaseManager.update(programme);
+
         databaseManager.close();
 
         databaseManager.open();

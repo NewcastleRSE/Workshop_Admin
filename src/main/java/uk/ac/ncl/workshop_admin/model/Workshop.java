@@ -16,7 +16,18 @@ public class Workshop {
   private String workshop;
 
   public Workshop() {
+  }
 
+  public Workshop(String workshop) {
+    this.workshop = workshop;
+  }
+
+  public String getWorkshop() {
+    return workshop;
+  }
+
+  public void setWorkshop(String workshop) {
+    this.workshop = workshop;
   }
 
   @Override
