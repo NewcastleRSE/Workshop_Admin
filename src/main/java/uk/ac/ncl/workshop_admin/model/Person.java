@@ -136,11 +136,6 @@ public class Person {
     getSchools().remove(school);
   }
 
-//  public void addSchool(School school) {
-//
-//    schools.add(school);
-//  }
-
   @Override
   public String toString() {
     return String.format("Person{%s %s}", firstName, lastName);

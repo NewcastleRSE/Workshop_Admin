@@ -3,10 +3,7 @@ package uk.ac.ncl.workshop_admin;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import uk.ac.ncl.workshop_admin.model.Person;
-import uk.ac.ncl.workshop_admin.model.Programme;
-import uk.ac.ncl.workshop_admin.model.School;
-import uk.ac.ncl.workshop_admin.model.Stage;
+import uk.ac.ncl.workshop_admin.model.*;
 import uk.ac.ncl.workshop_admin.util.DatabaseManager;
 
 import java.io.FileReader;
@@ -27,6 +24,7 @@ public class Main {
     printAllSchools(databaseManager.read(School.class));
     printAllProgrammes(databaseManager.read(Programme.class));
     printAllStages(databaseManager.read(Stage.class));
+    printAllWorkshops(databaseManager.read(Workshop.class));
     databaseManager.close();
   }
 
@@ -54,6 +52,12 @@ public class Main {
       System.out.println("    " + obj.toFullString());
   }
 
+  public static void printAllWorkshops(List<Workshop> objects) {
+    System.out.println("Workshop:");
+    for (Workshop obj : objects)
+      System.out.println("    " + obj.toString());
+  }
+
   private static void initDataset(DatabaseManager databaseManager) {
     HashMap<String, Object> parameters;
 
@@ -68,6 +72,7 @@ public class Main {
         String programmeName = record.get("Programme");
         String stageName = record.get("Stage");
         String schoolName = record.get("School");
+        String workshopName = record.get("occurrence");
 
 
         // Remove the double quotes from the user profile string
