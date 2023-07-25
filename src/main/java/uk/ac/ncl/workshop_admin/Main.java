@@ -26,6 +26,8 @@ public class Main {
     printAllStages(databaseManager.read(Stage.class));
     printAllWorkshops(databaseManager.read(Workshop.class));
     printAllRegistrations(databaseManager.read(Registration.class));
+    printAllInstructors(databaseManager.read(Instructor.class));
+    printAllInstructorWorkshops(databaseManager.read(InstructorWorkshop.class));
     databaseManager.close();
   }
 
@@ -62,6 +64,18 @@ public class Main {
   public static void printAllRegistrations(List<Registration> objects) {
     System.out.println("Registrations:");
     for (Registration obj : objects)
+      System.out.println("    " + obj.toString());
+  }
+
+  public static void printAllInstructors(List<Instructor> objects) {
+    System.out.println("Instructor:");
+    for (Instructor obj : objects)
+      System.out.println("    " + obj.toString());
+  }
+
+  public static void printAllInstructorWorkshops(List<InstructorWorkshop> objects) {
+    System.out.println("InstructorWorkshops:");
+    for (InstructorWorkshop obj : objects)
       System.out.println("    " + obj.toString());
   }
 
@@ -194,6 +208,31 @@ public class Main {
         databaseManager.create(registration);
 
         databaseManager.update(registration);
+
+        // Check if the instructor already exists in the database
+        parameters = new HashMap<>();
+        parameters.put("firstName", firstName);
+        parameters.put("lastName", lastName);
+        List<Instructor> existingInstructors = databaseManager.read(Instructor.class,
+            "person.firstName = :firstName AND person.lastName = :lastName", parameters);
+
+        Instructor instructor;
+        if (existingInstructors.isEmpty()) {
+          // Create and save the instructor to the database if it doesn't exist
+          // 'certified' field left empty (null) for now
+          instructor = new Instructor(person, null);
+          databaseManager.create(instructor);
+        } else {
+          // Use the existing instructor if it already exists
+          instructor = existingInstructors.get(0);
+        }
+        databaseManager.update(instructor);
+
+        // Create and save the InstructorWorkshop association
+        InstructorWorkshop instructorWorkshop = new InstructorWorkshop(instructor, workshop);
+        databaseManager.create(instructorWorkshop);
+
+
         databaseManager.close();
       }
 

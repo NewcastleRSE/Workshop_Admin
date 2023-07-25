@@ -28,5 +28,7 @@
         <mapping class="uk.ac.ncl.workshop_admin.model.Stage" />
         <mapping class="uk.ac.ncl.workshop_admin.model.Workshop" />
         <mapping class="uk.ac.ncl.workshop_admin.model.Registration" />
+        <mapping class="uk.ac.ncl.workshop_admin.model.Instructor" />
+        <mapping class="uk.ac.ncl.workshop_admin.model.InstructorWorkshop" />
     </session-factory>
 </hibernate-configuration>
