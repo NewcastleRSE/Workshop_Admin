@@ -236,8 +236,7 @@ public class Main {
         // Create and save the InstructorWorkshop association
         InstructorWorkshop instructorWorkshop = new InstructorWorkshop(instructor, workshop);
         databaseManager.create(instructorWorkshop);
-
-
+        
         databaseManager.close();
       }
 

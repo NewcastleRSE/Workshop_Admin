@@ -13,13 +13,12 @@ public class Instructor {
   @JoinColumn(name = "person_id") // Foreign key from Person entity
   private Person person;
 
-  private Boolean certified; // Change the type to Boolean (wrapper class) to allow null
+  private Boolean certified; // Boolean (wrapper class) to allow null
 
   public Instructor() {
-    // Required no-arg constructor for Hibernate
   }
 
-  public Instructor(Person person, Boolean certified) { // Update the constructor accordingly
+  public Instructor(Person person, Boolean certified) {
     this.person = person;
     this.certified = certified;
   }
@@ -42,11 +41,11 @@ public class Instructor {
     this.person = person;
   }
 
-  public Boolean getCertified() { // Update the getter method name
+  public Boolean getCertified() {
     return certified;
   }
 
-  public void setCertified(Boolean certified) { // Update the setter method name
+  public void setCertified(Boolean certified) {
     this.certified = certified;
   }
 
