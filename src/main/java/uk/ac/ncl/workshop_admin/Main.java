@@ -25,6 +25,7 @@ public class Main {
     printAllProgrammes(databaseManager.read(Programme.class));
     printAllStages(databaseManager.read(Stage.class));
     printAllWorkshops(databaseManager.read(Workshop.class));
+    printAllRegistrations(databaseManager.read(Registration.class));
     databaseManager.close();
   }
 
@@ -55,6 +56,12 @@ public class Main {
   public static void printAllWorkshops(List<Workshop> objects) {
     System.out.println("Workshop:");
     for (Workshop obj : objects)
+      System.out.println("    " + obj.toString());
+  }
+
+  public static void printAllRegistrations(List<Registration> objects) {
+    System.out.println("Registrations:");
+    for (Registration obj : objects)
       System.out.println("    " + obj.toString());
   }
 
@@ -182,6 +189,11 @@ public class Main {
         }
         databaseManager.update(person);
 
+        // Create and save the registration to the database
+        Registration registration = new Registration(person, workshop);
+        databaseManager.create(registration);
+
+        databaseManager.update(registration);
         databaseManager.close();
       }
 
