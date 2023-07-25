@@ -94,6 +94,9 @@ public class Main {
         String stageName = record.get("Stage");
         String schoolName = record.get("School");
         String workshopName = record.get("occurrence");
+        String login = record.get("username");
+        String contactNumber = record.get("contact number");
+        String email = record.get("email");
 
 
         // Remove the double quotes from the user profile string
@@ -109,12 +112,13 @@ public class Main {
         parameters = new HashMap<>();
         parameters.put("firstName", firstName);
         parameters.put("lastName", lastName);
-        List<Person> existingPeople = databaseManager.read(Person.class, "firstName = :firstName AND lastName = :lastName", parameters);
+        parameters.put("login", login);
+        List<Person> existingPeople = databaseManager.read(Person.class, "firstName = :firstName AND lastName = :lastName AND login = :login", parameters);
 
         Person person;
         if (existingPeople.isEmpty()) {
           // Create and save the person to the database if it doesn't exist
-          person = new Person(firstName, lastName);
+          person = new Person(firstName, lastName, login);
           databaseManager.create(person);
         } else {
           // Use the existing person if it already exists
@@ -213,8 +217,9 @@ public class Main {
         parameters = new HashMap<>();
         parameters.put("firstName", firstName);
         parameters.put("lastName", lastName);
+        parameters.put("login", login);
         List<Instructor> existingInstructors = databaseManager.read(Instructor.class,
-            "person.firstName = :firstName AND person.lastName = :lastName", parameters);
+            "person.firstName = :firstName AND person.lastName = :lastName AND person.login = :login", parameters);
 
         Instructor instructor;
         if (existingInstructors.isEmpty()) {

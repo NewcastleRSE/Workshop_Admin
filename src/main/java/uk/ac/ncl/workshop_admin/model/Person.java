@@ -20,6 +20,15 @@ public class Person {
   @Column(name="last_name")
   private String lastName;
 
+  @Column(name="contact_number")
+  private String contactNumber;
+
+  @Column(name="email")
+  private String email;
+
+  @Column(name="login")
+  private String login;
+
   @OnDelete(action = OnDeleteAction.CASCADE)
   @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(
@@ -51,9 +60,10 @@ public class Person {
 
   }
 
-  public Person(String firstName, String lastName) {
+  public Person(String firstName, String lastName, String login) {
     this.firstName   = firstName;
     this.lastName    = lastName;
+    this.login       = login;
   }
 
   public int getId() {
@@ -74,6 +84,14 @@ public class Person {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
+  }
+
+  public String getLogin() {
+    return login;
+  }
+
+  public void setLogin(String login) {
+    this.login = login;
   }
 
   // Lazy initialization for the programmes set
@@ -138,7 +156,7 @@ public class Person {
 
   @Override
   public String toString() {
-    return String.format("Person{%s %s}", firstName, lastName);
+    return String.format("Person{%s %s %s}", firstName, lastName, login);
   }
 
   public String toFullString() {
