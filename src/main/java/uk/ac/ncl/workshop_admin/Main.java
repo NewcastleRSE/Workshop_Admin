@@ -3,6 +3,9 @@ package uk.ac.ncl.workshop_admin;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import static spark.Spark.*;
+import spark.Spark;
+import uk.ac.ncl.workshop_admin.controller.PersonController;
 import uk.ac.ncl.workshop_admin.model.*;
 import uk.ac.ncl.workshop_admin.util.DatabaseManager;
 
@@ -16,6 +19,44 @@ public class Main {
 
   public static void main(String[] args) {
     DatabaseManager databaseManager = new DatabaseManager();
+
+    port(4567); //default if not specified
+    staticFiles.header("Access-Control-Allow-Origin", "*");
+    staticFiles.location("/public");
+
+    System.out.println("You should be able to access this service on http://0.0.0.0:4567");
+
+    // just some information that can be retrieved
+    before((req, res) -> {
+      System.out.println("Query string: " + req.queryString());
+      System.out.println("Headers: " + req.headers());
+      System.out.println("Protocol: " + req.protocol());
+      System.out.println("Method: " + req.raw().getMethod());
+      System.out.println("Matched path: " + req.matchedPath());
+      System.out.println("Path info: " + req.pathInfo());
+    });
+
+    // USING GET
+    // a simple home page
+    get("/", (req, res) ->
+        "Hello World: <a href=\"http://0.0.0.0:4567/hello\">Hello World</a><br/>" +
+            "getPerson: <a href=\"http://0.0.0.0:4567/getPerson?personID=2\">2</a><br/>" +
+            "<a href=\"http://0.0.0.0:4567/html/index.html\">addPerson</a><br/>" +
+            "<a href=\"http://0.0.0.0:4567/getAllPeople\">getAllPeople</a><br/>");
+
+    // direct response to a get
+    get("/hello", (req, res) -> "Hello World");
+
+    // direct response to a get with a variable: http://0.0.0.0:4567/hello/jannetta
+    get("/hello/:name", (req, res) -> "Hello " + req.params(":name"));
+
+    // Create an instance of PersonController
+    PersonController personController = new PersonController(databaseManager);
+
+    // Call the methods on the PersonController instance
+    Spark.get("/getPerson", (req, res) -> personController.getPerson(req, res));
+    Spark.post("/addPerson", (req, res) -> personController.addPerson(req, res));
+
 
     initDataset(databaseManager);
 
@@ -236,7 +277,7 @@ public class Main {
         // Create and save the InstructorWorkshop association
         InstructorWorkshop instructorWorkshop = new InstructorWorkshop(instructor, workshop);
         databaseManager.create(instructorWorkshop);
-        
+
         databaseManager.close();
       }
 
