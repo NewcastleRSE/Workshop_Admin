@@ -41,7 +41,7 @@ public class Main {
     get("/", (req, res) ->
         "Hello World: <a href=\"http://0.0.0.0:4567/hello\">Hello World</a><br/>" +
             "getPerson: <a href=\"http://0.0.0.0:4567/getPerson?personID=2\">2</a><br/>" +
-            "<a href=\"http://0.0.0.0:4567/html/index.html\">addPerson</a><br/>" +
+            "<a href=\"http://0.0.0.0:4567/html/add_person.html\">addPerson</a><br/>" +
             "<a href=\"http://0.0.0.0:4567/getAllPeople\">getAllPeople</a><br/>");
 
     // direct response to a get
